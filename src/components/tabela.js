@@ -1623,5 +1623,6 @@ const secToMin = (tempo) => {
     var seconds = tempo % 60;
      
    return (minutes + ":" + seconds);
+   
 }
 export default Tabela;
