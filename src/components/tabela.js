@@ -1,6 +1,8 @@
 import React from "react";
 import Icon from '@material-ui/core/Icon';
 import ReactAudioPlayer from 'react-audio-player';
+import api from "../services/api";
+import { useEffect } from "react";
 
 const listatop = {
   tracks: {
@@ -1568,6 +1570,18 @@ const listatop = {
 };
 
 const Tabela = (props) => {
+
+  useEffect(() => {
+    api
+      .get("/chart")
+      .then((response) => {
+        console.log(response)
+      })
+      .catch((err) => {
+        console.error("ops! ocorreu um erro" + err);
+      });
+  }, []);
+
   return (
     <div>
       <h1>Lista Top 10 Músicas</h1>
@@ -1590,7 +1604,7 @@ const Tabela = (props) => {
                 <td><img src={musica.artist.picture_small} /></td>
                 <td>{musica.title}</td>
                 <td>{musica.artist.name}</td>
-                <td>{musica.duration}</td>
+                <td>{secToMin(musica.duration)}</td>
                 <td><a target="_self" href={musica.link}>&#127925;</a></td>
                 <td><ReactAudioPlayer source src={musica.preview} controls/></td>
                 <td><Icon color="primary">&#9733;</Icon></td>
@@ -1603,4 +1617,11 @@ const Tabela = (props) => {
   );
 };
 
+const secToMin = (tempo) => {
+
+    var minutes = Math.floor( tempo / 60 );
+    var seconds = tempo % 60;
+     
+   return (minutes + ":" + seconds);
+}
 export default Tabela;
